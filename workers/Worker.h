@@ -9,11 +9,14 @@
 #include "../client/IOrder.h"
 
 class Worker {
-private:
+protected:
     vector<IOrder *> ordersQueue;
+    IOrder *curOrder;
     string name;
 public:
+    Worker(string name);
     IOrder*  getNextOrder();
+    void addOrder(IOrder *order);
 };
 
 

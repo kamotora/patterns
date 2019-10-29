@@ -6,22 +6,30 @@
 
 class Order;
 
-class ProxyOrder : IOrder{
+class ProxyOrder : public IOrder{
 private:
     Order* order;
-public:
-    Status* getStatus() override;
-
-private:
-    void setStatus(Status *status) override;
-
-    const string *getAddress() override;
 
 public:
+    ProxyOrder(Order *order);
 
     Client* getClient() override;
 
     double countPrice() override;
+
+    int getNumber() override;
+
+    void addGood(Good *good) override;
+
+    vector<Good *> getGoods() override;
+
+    TypeDelivery getTypeDelivery() override;
+
+    Status::TypeStatus getStatus() override;
+
+    void setStatus(Status::TypeStatus status) override;
+
+    string getAddress() override;
 };
 
 

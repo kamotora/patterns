@@ -7,11 +7,30 @@
 
 
 #include "IDeliver.h"
+#include "../client/Order.h"
 
 class Drone : public IDeliver {
+private:
+    int num;
+    Order * curOrder;
+    int timeToDead;
+    int chargeLevel;
+    TypeDelivery typeDeliver;
+    vector<IOrder *> ordersQueue;
 public:
-    void deliver();
+    Drone(int num);
+    void deliver(IOrder *order);
     void goToCharge();
+
+    int getNum() const;
+
+    Order *getCurOrder() const;
+
+    int getTimeToDead() const;
+
+    int getChargeLevel() const;
+
+    TypeDelivery getTypeDeliver() override ;
 };
 
 

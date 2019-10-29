@@ -4,10 +4,10 @@
 
 #include "Status.h"
 
-typeStatus Status::getName() const {
+Status::TypeStatus Status::getName() const {
     return name;
 }
-string Status::getName(){
+ string Status::getName(){
     string status;
     switch(name){
         case DECORATED:
@@ -22,7 +22,7 @@ string Status::getName(){
             status = "Готовится";break;
         case IN_DELIVERY_QUEUE:
             status = "В очереди на доставку";break;
-        case DELIVERED:
+        case DELIVER:
             status = "Доставляется";break;
         case COMPLETED:
             status = "Завершен";break;
@@ -32,6 +32,6 @@ string Status::getName(){
     return status;
 }
 
-void Status::setName(typeStatus name) {
+void Status::setName(TypeStatus name) {
     Status::name = name;
 }

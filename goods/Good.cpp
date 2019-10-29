@@ -11,3 +11,11 @@ const string &Good::getName() const {
 void Good::setName(const string &name) {
     Good::name = name;
 }
+
+double Good::getCost() const {
+    return cost;
+}
+
+void Good::setCost(double cost) {
+    Good::cost = cost;
+}

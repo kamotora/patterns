@@ -8,11 +8,16 @@
 
 #include "Worker.h"
 
-class Cook : Worker {
-private:
-    string typeCookingProduct;
+class Cook : public Worker {
 public:
-    Cook();
+    enum TypeCookingProduct{
+        SHAWARMA,
+        PIZZA
+    };
+private:
+    TypeCookingProduct typeCookingProduct;
+public:
+    Cook(string name, TypeCookingProduct typeCookingProduct);
     void cook();
 
 };

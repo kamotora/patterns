@@ -18,15 +18,17 @@ private:
     string name;
     string address;
     string tel;
-    vector<Order *> prevOrders;
+    vector<Order *> ordersHistory;
     Order * currentOrder;
 public:
-    Client();
+    Client(string name, string address, string tel);
+    Order* createNewOrder();
     void pay();
     void changeInfo();
     void chooseDeliveryMethod();
     void addGoodToOrder();
     void delGoodFromOrder();
+    string getAddress();
 };
 
 

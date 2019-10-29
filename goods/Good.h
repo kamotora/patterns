@@ -9,12 +9,17 @@
 using namespace std;
 
 class Good {
-private:
+protected:
+    double cost;
     string name;
 public:
     const string &getName() const;
 
     void setName(const string &name);
+
+    double getCost() const;
+
+    void setCost(double cost);
 };
 
 

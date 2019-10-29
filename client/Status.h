@@ -4,33 +4,39 @@
 
 using namespace std;
 
-enum typeStatus {
-    //Оформлен
-    DECORATED,
-    //Оплачен
-    PAID,
-    //В очереди на приготовление
-    IN_COOKING_QUEUE,
-    //Готовится
-    COOK,
-    //В очереди на доставку
-    IN_DELIVERY_QUEUE,
-    //Доставляется
-    DELIVERED,
-    //Завершен
-    COMPLETED,
-    //Отменён
-    CANCELED
-};
+
 
 class Status{
-private:
-    typeStatus name;
 public:
-    typeStatus getName() const;
+    enum TypeStatus {
+        //Оформлен
+        DECORATED,
+        //Оплачен
+        PAID,
+        //В очереди на приготовление
+        IN_COOKING_QUEUE,
+        //Готовится
+        COOK,
+        //Приготовлен
+        COOKED,
+        //В очереди на доставку
+        IN_DELIVERY_QUEUE,
+        //Доставляется
+        DELIVER,
+        //Завершен
+        COMPLETED,
+        //Отменён
+        CANCELED
+    };
+private:
+    TypeStatus name;
+public:
+    TypeStatus getName() const;
 
     string getName();
 
-    void setName(typeStatus name);
+    void setName(TypeStatus name);
+
+
 };
 #endif //PATTERNS_STATUS_H
