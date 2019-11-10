@@ -17,6 +17,8 @@ public:
     Worker(string name);
     IOrder*  getNextOrder();
     void addOrder(IOrder *order);
+
+    IOrder *getCurOrder() const;
 };
 
 

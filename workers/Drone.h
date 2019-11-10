@@ -4,33 +4,27 @@
 
 #ifndef PATTERNS_DRONE_H
 #define PATTERNS_DRONE_H
-
-
 #include "IDeliver.h"
-#include "../client/Order.h"
 
 class Drone : public IDeliver {
 private:
     int num;
-    Order * curOrder;
+    IOrder * curOrder = nullptr;
     int timeToDead;
     int chargeLevel;
-    TypeDelivery typeDeliver;
     vector<IOrder *> ordersQueue;
 public:
     Drone(int num);
-    void deliver(IOrder *order);
+    void deliver(IOrder *order) override;
     void goToCharge();
 
     int getNum() const;
-
-    Order *getCurOrder() const;
 
     int getTimeToDead() const;
 
     int getChargeLevel() const;
 
-    TypeDelivery getTypeDeliver() override ;
+    IOrder *getCurOrder() override;
 };
 
 

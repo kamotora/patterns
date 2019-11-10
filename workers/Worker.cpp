@@ -20,3 +20,7 @@ Worker::Worker(string name) : name(std::move(name)){
 void Worker::addOrder(IOrder *order) {
     ordersQueue.push_back(order);
 }
+
+IOrder *Worker::getCurOrder() const {
+    return curOrder;
+}

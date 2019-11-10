@@ -7,9 +7,11 @@
 
 #include "IOrder.h"
 #include "Client.h"
+#include "../workers/Delivers.h"
 
 class Good;
 class Client;
+
 
 class Order : public IOrder {
 public:
@@ -21,7 +23,7 @@ private:
     int number;
     Client* client;
     string address;
-    TypeDelivery typeDelivery;
+    IDeliver *deliver;
 
 public:
     Order(Client *client, TypeDelivery typeDelivery) ;
@@ -43,9 +45,9 @@ public:
 
     vector<Good *> getGoods() override;
 
-    TypeDelivery getTypeDelivery() override;
+    IDeliver* getDeliver() override;
 
-    void setTypeDelivery(TypeDelivery typeDelivery);
+    void setTypeDelivery(TypeDelivery typeDelivery) override;
 };
 
 

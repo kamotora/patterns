@@ -3,6 +3,8 @@
 //
 
 #include "Order.h"
+#include "../workers/Courier.h"
+#include "../workers/Drone.h"
 
 #include <utility>
 
@@ -42,13 +44,14 @@ vector<Good *> Order::getGoods() {
 }
 
 
-Order::Order(Client *client, TypeDelivery typeDelivery) : client(client), typeDelivery(typeDelivery){
+Order::Order(Client *client, TypeDelivery typeDelivery) : client(client){
     address = client->getAddress();
     status = Status::TypeStatus::DECORATED;
     time_t timeInSeconds;
     time(&timeInSeconds);
     date = localtime(&timeInSeconds);
     number = rand() % 100;
+    setTypeDelivery(typeDelivery);
 }
 
 Order::Order(Client *client, string address, TypeDelivery typeDelivery) : Order(client,typeDelivery){
@@ -59,11 +62,23 @@ Order::Order(Client *client, string address, TypeDelivery typeDelivery, vector<G
     this->goods = std::move(goods);
 }
 
-TypeDelivery Order::getTypeDelivery() {
-    return typeDelivery;
+IDeliver* Order::getDeliver() {
+    return deliver;
 }
 
 void Order::setTypeDelivery(TypeDelivery typeDelivery) {
-    Order::typeDelivery = typeDelivery;
+    switch(typeDelivery){
+        case COURIER:
+            deliver = Delivers::getInstance()->getFreeCourier();
+            break;
+        case DRONE:
+            deliver = Delivers::getInstance()->getFreeDrone();
+            break;
+        case NONE:
+            printf("Error! Неизвестный тип доставщика при создании заказа");
+        if(deliver == nullptr)
+            printf("Error! Нет свободных доставщиков. Попробуйте выбрать другой тип доставки");
+    }
 }
+
 

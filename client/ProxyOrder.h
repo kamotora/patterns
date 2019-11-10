@@ -23,13 +23,16 @@ public:
 
     vector<Good *> getGoods() override;
 
-    TypeDelivery getTypeDelivery() override;
 
     Status::TypeStatus getStatus() override;
 
     void setStatus(Status::TypeStatus status) override;
 
     string getAddress() override;
+
+    IDeliver *getDeliver() override;
+
+    void setTypeDelivery(TypeDelivery typeDelivery) override;
 };
 
 

@@ -7,15 +7,11 @@
 
 class Courier : public Worker, public IDeliver{
 private:
-    IOrder *curOrder;
-    TypeDelivery typeDeliver;
+    IOrder *curOrder = nullptr;
 public:
     Courier(string name);
     void getPaid();
-
     IOrder *getCurOrder();
-
-    TypeDelivery getTypeDeliver() override ;
     void deliver(IOrder *order) override ;
 };
 

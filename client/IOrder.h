@@ -9,7 +9,7 @@
 using namespace std;
 
 class Client;
-
+class IDeliver;
 class IOrder {
 public:
     virtual Status::TypeStatus getStatus() = 0;
@@ -20,7 +20,8 @@ public:
     virtual double countPrice() = 0;
     virtual void addGood(Good *good) = 0;
     virtual vector<Good *> getGoods() = 0;
-    virtual TypeDelivery getTypeDelivery() = 0;
+    virtual IDeliver *getDeliver() = 0;
+    virtual void setTypeDelivery(TypeDelivery typeDelivery) = 0;
 };
 
 

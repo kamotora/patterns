@@ -34,13 +34,6 @@ vector<Good *> ProxyOrder::getGoods() {
     return order->getGoods();
 }
 
-TypeDelivery ProxyOrder::getTypeDelivery() {
-    if(order->getStatus() <= Status::TypeStatus::COOK){
-        cout << "Передать заказ №" << order->getNumber() << " в доставку пока что нельзя" << endl;
-        return TypeDelivery::NONE;
-    }
-    return order->getTypeDelivery();
-}
 
 Status::TypeStatus ProxyOrder::getStatus() {
     return order->getStatus();
@@ -51,5 +44,21 @@ void ProxyOrder::setStatus(Status::TypeStatus status) {
 }
 
 string ProxyOrder::getAddress() {
+    if(order->getStatus() <= Status::TypeStatus::COOK){
+        cout << "Передать заказ №" << order->getNumber() << " в доставку пока что нельзя" << endl;
+        return "";
+    }
     return order->getAddress();
+}
+
+IDeliver *ProxyOrder::getDeliver() {
+    if(order->getStatus() <= Status::TypeStatus::COOK){
+        cout << "Передать заказ №" << order->getNumber() << " в доставку пока что нельзя" << endl;
+        return nullptr;
+    }
+    return order->getDeliver();
+}
+
+void ProxyOrder::setTypeDelivery(TypeDelivery typeDelivery) {
+    order->setTypeDelivery(typeDelivery);
 }

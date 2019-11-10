@@ -98,6 +98,8 @@ int main() {
     delivers.push_back(drone);
     delivers.push_back(courier);
     Manager *manager = new Manager("Менеджер", delivers);
+    Delivers::getInstance()->addDrone(drone);
+    Delivers::getInstance()->addCourier(courier);
     managers.push_back(manager);
     Order *order1 = client->createNewOrder();
     orders.push_back(new ProxyOrder(order1));
