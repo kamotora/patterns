@@ -19,9 +19,9 @@ public:
 
     int getNumber() override;
 
-    void addGood(Good *good) override;
+    void addGood(Product *good) override;
 
-    vector<Good *> getGoods() override;
+    vector<Product *> getGoods() override;
 
 
     Status::TypeStatus getStatus() override;

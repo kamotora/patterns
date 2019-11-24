@@ -7,10 +7,21 @@
 #include "workers/Drone.h"
 #include "workers/Cook.h"
 #include "client/ProxyOrder.h"
+#include "goods/Ingredient.h"
+#include "goods/CookingGood.h"
+#include "notifications/INotifier.h"
+#include "notifications/EmailNotif.h"
+#include "notifications/TelNotif.h"
+#include "notifications/NotifierAdapter.h"
+#include "notifications/TelegramNotif.h"
+#include "workers/Caller.h"
+
 
 vector<IOrder *> orders;
 vector<Cook*> cooks;
 vector<Manager*> managers;
+
+ICaller *caller = nullptr;
 
 using namespace std;
 
@@ -82,36 +93,88 @@ void managerWork(){
         for(Manager *manager:managers){
             while (manager->getNextOrder() != nullptr){
                 manager->packOrder();
+                caller->call(manager->getCurOrder());
                 manager->sendToDelivery();
             }
         }
     }
 }
 
+vector<Product *> products;
+void makeProducts(){
+    auto *tomato = new Ingredient("Помидор",10);
+    auto *cucumber = new Ingredient("Огурец",5);
+    auto *cabbage = new Ingredient("Капуста",2);
+    auto *cheese = new Ingredient("Сыр",20);
+    auto *meat = new Ingredient("Колбаса",15);
+    auto *meatCow = new Ingredient("Говядина",25);
+    auto *meatPig = new Ingredient("Свинина",25);
+
+    auto product1 = new CookingGood("Продукт 1",350);
+    product1->addIngredient(tomato,3);
+    product1->addIngredient(cabbage,2);
+    product1->addIngredient(meat,3);
+
+    auto product2 = new CookingGood("Продукт 2",400);
+    product2->addIngredient(cucumber,5);
+    product2->addIngredient(cheese,2);
+    product2->addIngredient(meatCow,4);
+    product2->addIngredient(tomato,2);
+
+
+    auto product3 = new CookingGood("Продукт 2",500);
+    product3->addIngredient(meatPig,3);
+    product3->addIngredient(meat,3);
+    product3->addIngredient(cheese,2);
+    product3->addIngredient(meatCow,2);
+    product3->addIngredient(tomato,2);
+
+    products = {product1,product2,product3};
+}
+
 int main() {
-    Client *client = new Client("Петя", "ул. Ленина, д.5", "01");
-    Courier *courier = new Courier("Курьер");
+    Client *client = new Client("Петя", "ул. Ленина, д.5", "777999");
+    Courier *courier = new Courier("Вася");
     Cook *cook = new Cook("Повар",Cook::TypeCookingProduct::PIZZA);
     cooks.push_back(cook);
     Drone *drone = new Drone(1);
     vector<IDeliver*> delivers;
     delivers.push_back(drone);
     delivers.push_back(courier);
-    Manager *manager = new Manager("Менеджер", delivers);
+
+    Order *order1 = client->createNewOrder();
+    Manager *manager = new Manager("Менеджер Саша");
+    managers.push_back(manager);
+    //лр4
+    makeProducts();
+    order1->addGood(products[0]);
+    order1->addGood(products[1]);
+    order1->addGood(products[2]);
+    order1->countPrice();
+
     Delivers::getInstance()->addDrone(drone);
     Delivers::getInstance()->addCourier(courier);
-    managers.push_back(manager);
-    Order *order1 = client->createNewOrder();
+    INotifier *emailNotif = new EmailNotif();
+    INotifier *telNotif = new TelNotif(emailNotif);
+    INotifier *telegramNotif = new TelegramNotif(telNotif);
+
+    //Было раньше
+    //caller = new Caller("Звонильщик Коля");
+    //Стало лучше
+    caller = new NotifierAdapter("Автоматический звонильщик", telegramNotif);
+    //
+
     orders.push_back(new ProxyOrder(order1));
     client->pay();
     cook->addOrder(order1);
     order1->setTypeDelivery(TypeDelivery::COURIER);
+    /*
     Order *order2 = client->createNewOrder();
     client->pay();
     cook -> addOrder(order2);
     order2->setTypeDelivery(TypeDelivery::DRONE);
     orders.push_back(new ProxyOrder(order2));
-
+    */
     thread queueThread(queueWork);
     sleep(1);
 

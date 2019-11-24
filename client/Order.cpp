@@ -1,12 +1,10 @@
-//
-// Created by root on 24.10.2019.
-//
-
 #include "Order.h"
 #include "../workers/Courier.h"
 #include "../workers/Drone.h"
+#include "../goods/ProductIterator.h"
 
 #include <utility>
+#include <iostream>
 
 Status::TypeStatus  Order::getStatus() {
     return status;
@@ -25,21 +23,28 @@ Client* Order::getClient() {
 }
 
 double Order::countPrice() {
-    double price = 0.0;
-    for(Good *good : goods)
-        price += good->getCost();
-    return price;
+    double salePrice = 0.0;
+    for(Product * good : goods)
+        salePrice += good->getSaleCost();
+    ProductIterator *iterator = new ProductIterator(&goods);
+    double primePrice = 0.0;
+    while(iterator->hasNext()){
+        iterator->getNext();
+        primePrice += iterator->getPrimeCostCur();
+    }
+    std::cout << "Для заказа №" << this->number << " цена продажи = " << salePrice << ", цена себестоимости = " << primePrice << std::endl;
+    return salePrice;
 }
 
 int Order::getNumber() {
     return number;
 }
 
-void Order::addGood(Good *good) {
+void Order::addGood(Product *good) {
     goods.push_back(good);
 }
 
-vector<Good *> Order::getGoods() {
+vector<Product *> Order::getGoods() {
     return goods;
 }
 
@@ -58,7 +63,7 @@ Order::Order(Client *client, string address, TypeDelivery typeDelivery) : Order(
     address = std::move(address);
 }
 
-Order::Order(Client *client, string address, TypeDelivery typeDelivery, vector<Good *> goods) :Order(client,address,typeDelivery){
+Order::Order(Client *client, string address, TypeDelivery typeDelivery, vector<Product *> goods) : Order(client, address, typeDelivery){
     this->goods = std::move(goods);
 }
 
@@ -77,7 +82,7 @@ void Order::setTypeDelivery(TypeDelivery typeDelivery) {
         case NONE:
             printf("Error! Неизвестный тип доставщика при создании заказа");
         if(deliver == nullptr)
-            printf("Error! Нет свободных доставщиков. Попробуйте выбрать другой тип доставки");
+            printf("Error! Нет свободных доставщиков данного типа. Попробуйте выбрать другой тип доставки");
     }
 }
 

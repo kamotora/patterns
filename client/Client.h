@@ -18,6 +18,7 @@ private:
     string name;
     string address;
     string tel;
+    string email;
     vector<Order *> ordersHistory;
     Order * currentOrder;
 public:
@@ -29,6 +30,10 @@ public:
     void addGoodToOrder();
     void delGoodFromOrder();
     string getAddress();
+
+    const string &getTel() const;
+
+    const string &getEmail() const;
 };
 
 

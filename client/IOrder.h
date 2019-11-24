@@ -3,7 +3,7 @@
 #include <vector>
 #include "string"
 #include "Status.h"
-#include "../goods/Good.h"
+#include "../goods/Product.h"
 #include "TypeDelivery.h"
 
 using namespace std;
@@ -18,10 +18,11 @@ public:
     virtual Client* getClient() = 0;
     virtual int getNumber() = 0;
     virtual double countPrice() = 0;
-    virtual void addGood(Good *good) = 0;
-    virtual vector<Good *> getGoods() = 0;
+    virtual void addGood(Product *good) = 0;
+    virtual vector<Product *> getGoods() = 0;
     virtual IDeliver *getDeliver() = 0;
     virtual void setTypeDelivery(TypeDelivery typeDelivery) = 0;
+    //virtual void deleteGood(Product * good) = 0;
 };
 
 

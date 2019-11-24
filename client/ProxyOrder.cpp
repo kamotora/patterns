@@ -26,11 +26,11 @@ int ProxyOrder::getNumber() {
     return order->getNumber();
 }
 
-void ProxyOrder::addGood(Good *good) {
+void ProxyOrder::addGood(Product *good) {
     order->addGood(good);
 }
 
-vector<Good *> ProxyOrder::getGoods() {
+vector<Product *> ProxyOrder::getGoods() {
     return order->getGoods();
 }
 

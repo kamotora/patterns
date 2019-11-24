@@ -7,9 +7,7 @@ void Manager::sendToDelivery() {
     deliver->deliver(curOrder);
 }
 
-Manager::Manager(string name, vector<IDeliver *> delivers) : Worker(name) {
-    this->delivers = std::move(delivers);
-}
+Manager::Manager(string name) : Worker(name) {}
 
 void Manager::packOrder() {
     std::cout << "Заказ №" << curOrder->getNumber() << " упаковывается" << endl;

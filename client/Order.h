@@ -9,7 +9,7 @@
 #include "Client.h"
 #include "../workers/Delivers.h"
 
-class Good;
+class Product;
 class Client;
 
 
@@ -17,7 +17,7 @@ class Order : public IOrder {
 public:
 
 private:
-    vector<Good *> goods;
+    vector<Product *> goods;
     Status::TypeStatus status;
     struct tm * date;
     int number;
@@ -28,7 +28,7 @@ private:
 public:
     Order(Client *client, TypeDelivery typeDelivery) ;
     Order(Client *client, string address, TypeDelivery typeDelivery);
-    Order(Client *client, string address, TypeDelivery typeDelivery, vector<Good *> goods);
+    Order(Client *client, string address, TypeDelivery typeDelivery, vector<Product *> goods);
     Status::TypeStatus getStatus() override;
 
     void setStatus(Status::TypeStatus status) override;
@@ -41,13 +41,14 @@ public:
 
     int getNumber() override;
 
-    void addGood(Good *godd) override;
+    void addGood(Product *good) override;
 
-    vector<Good *> getGoods() override;
+    vector<Product *> getGoods() override;
 
     IDeliver* getDeliver() override;
 
     void setTypeDelivery(TypeDelivery typeDelivery) override;
+
 };
 
 

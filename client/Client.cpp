@@ -43,6 +43,15 @@ Order* Client::createNewOrder() {
     Order *order = new Order(this,this->address, TypeDelivery::COURIER);
     ordersHistory.push_back(order);
     currentOrder = order;
+    cout << "Заказ №"<<order->getNumber() << " создан" << endl;
     return order;
+}
+
+const string &Client::getTel() const {
+    return tel;
+}
+
+const string &Client::getEmail() const {
+    return email;
 }
 
