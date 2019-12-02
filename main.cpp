@@ -1,11 +1,12 @@
 #include <iostream>
 #include <thread>
 #include <unistd.h>
+#include <gtk/gtk.h>
 #include "client/Client.h"
 #include "workers/Manager.h"
 #include "workers/Courier.h"
 #include "workers/Drone.h"
-#include "workers/Cook.h"
+#include "workers/cook/Cook.h"
 #include "client/ProxyOrder.h"
 #include "goods/Ingredient.h"
 #include "goods/CookingGood.h"
@@ -15,6 +16,8 @@
 #include "notifications/NotifierAdapter.h"
 #include "notifications/TelegramNotif.h"
 #include "workers/Caller.h"
+#include "dialogs/LinuxFormDialog.h"
+#include "dialogs/ConsoleDialog.h"
 
 
 vector<IOrder *> orders;
@@ -52,7 +55,7 @@ string temp(Status::TypeStatus name){
 
 void queueWork(){
     while(true){
-        int count = 0;
+        //int count = 0;
         for(IOrder *order :orders){
             switch (order->getStatus()){
                 case Status::TypeStatus::PAID:
@@ -64,16 +67,17 @@ void queueWork(){
                     managers.front()->addOrder(order);
                     break;
                 case Status::TypeStatus::COMPLETED:
-                    count++;
+                    //count++;
                     break;
                 default:
                     //cout << "Заказ №" << order->getNumber() << ". " << temp(order->getStatus()) << endl;
                     sleep(1);
                     break;
             }
+            sleep(1);
         }
-        if(count == orders.size())
-            break;
+        //if(count == orders.size())
+          //  break;
     }
 }
 
@@ -81,9 +85,7 @@ void queueWork(){
 void cookWork(){
     while(true){
         for(Cook *cook:cooks){
-            while (cook->getNextOrder() != nullptr){
-                cook->cook();
-            }
+            cook->cook();
         }
     }
 }
@@ -132,28 +134,33 @@ void makeProducts(){
     products = {product1,product2,product3};
 }
 
-int main() {
-    Client *client = new Client("Петя", "ул. Ленина, д.5", "777999");
+int main(int argc, char *argv[]) {
+    srand(static_cast<unsigned int>(time(nullptr)));
     Courier *courier = new Courier("Вася");
     Cook *cook = new Cook("Повар",Cook::TypeCookingProduct::PIZZA);
     cooks.push_back(cook);
     Drone *drone = new Drone(1);
+    Delivers::getInstance()->addDrone(drone);
+    Delivers::getInstance()->addCourier(courier);
     vector<IDeliver*> delivers;
     delivers.push_back(drone);
     delivers.push_back(courier);
+    //лр5
+    CreatorOrder *creator = new CreatorOrder(new ConsoleDialog());
+    IOrder *order1 = Clients::createNewOrder(creator);
+    Client *client = order1->getClient();
+    //end лр5
 
-    Order *order1 = client->createNewOrder();
     Manager *manager = new Manager("Менеджер Саша");
     managers.push_back(manager);
     //лр4
     makeProducts();
+    /*
     order1->addGood(products[0]);
     order1->addGood(products[1]);
     order1->addGood(products[2]);
     order1->countPrice();
-
-    Delivers::getInstance()->addDrone(drone);
-    Delivers::getInstance()->addCourier(courier);
+    */
     INotifier *emailNotif = new EmailNotif();
     INotifier *telNotif = new TelNotif(emailNotif);
     INotifier *telegramNotif = new TelegramNotif(telNotif);
@@ -164,10 +171,9 @@ int main() {
     caller = new NotifierAdapter("Автоматический звонильщик", telegramNotif);
     //
 
-    orders.push_back(new ProxyOrder(order1));
+    orders.push_back(new ProxyOrder((Order *)order1));
     client->pay();
-    cook->addOrder(order1);
-    order1->setTypeDelivery(TypeDelivery::COURIER);
+    //cook->addOrder(order1);
     /*
     Order *order2 = client->createNewOrder();
     client->pay();
@@ -182,6 +188,18 @@ int main() {
     //managerThread.detach();
     thread cookThread(cookWork);
     //cookThread.detach();
+    char answ;
+    do{
+        cout << "Ещё заказ?(y,n)" << endl;
+        cin >> answ;
+        if(answ == 'y'){
+            IOrder *newOrder = Clients::createNewOrder(creator);
+            orders.push_back(newOrder);
+            sleep(1);
+            auto client1 = newOrder->getClient();
+            client1->pay();
+        }
+    }while(answ != 'n');
     queueThread.join();
     cout << "Все заказы обслужены" << endl;
     return 0;

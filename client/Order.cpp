@@ -81,9 +81,14 @@ void Order::setTypeDelivery(TypeDelivery typeDelivery) {
             break;
         case NONE:
             printf("Error! Неизвестный тип доставщика при создании заказа");
-        if(deliver == nullptr)
-            printf("Error! Нет свободных доставщиков данного типа. Попробуйте выбрать другой тип доставки");
     }
+    if(deliver == nullptr)
+        printf("Error! Нет свободных доставщиков данного типа. Попробуйте выбрать другой тип доставки");
 }
+
+Order::Order(vector<Product *>  goods, Status::TypeStatus status, tm * date,
+        int number, Client * client, string address,IDeliver *deliver):
+        goods (std::move(goods)), status(status), date(date), number(number), client(client), address(std::move(address)), deliver(deliver) {}
+
 
 

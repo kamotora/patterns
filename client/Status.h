@@ -26,7 +26,9 @@ public:
         //Завершен
         COMPLETED,
         //Отменён
-        CANCELED
+        CANCELED,
+        //Неопределенный тип
+        NONE
     };
 private:
     TypeStatus name;

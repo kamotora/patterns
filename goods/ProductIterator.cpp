@@ -14,7 +14,7 @@ Product * ProductIterator::getNext() {
     else if(hasNext()){
         Product * product = composite->at(curPos++);
         vector<pair<Product *,int>> *childs = product->getChild();
-        if(childs != nullptr) {
+        if(!childs->empty()) {
             for (pair<Product *, int> pair : *childs)
                 myStack.push(pair);
                 //myStack.push(pair);

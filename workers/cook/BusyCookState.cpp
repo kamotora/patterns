@@ -1,13 +1,12 @@
-#include <iostream>
-#include <thread>
-#include "Cook.h"
+//
+// Created by artem on 30.11.2019.
+//
 
+#include "BusyCookState.h"
 
-Cook::Cook(string name, Cook::TypeCookingProduct typeCookingProduct) : Worker(name) {
-    this->typeCookingProduct = typeCookingProduct;
-}
-
-void Cook::cook() {
+void BusyCookState::work() {
+    auto curOrder = cook->getCurOrder();
+    //Если нет заказа или какой-то не тот
     if(curOrder == nullptr || curOrder->getStatus() != Status::TypeStatus::IN_COOKING_QUEUE){
         return;
     }
@@ -15,4 +14,10 @@ void Cook::cook() {
     cout << "Заказ №" << curOrder->getNumber() << " готовится" << endl;
     std::this_thread::sleep_for(std::chrono::milliseconds(rand() % 7 * 1000));
     curOrder->setStatus(Status::TypeStatus::COOKED);
+    cook->setCurOrder(nullptr);
+    cook->setState(new FreeCookState(cook));
+
+}
+
+BusyCookState::BusyCookState(Cook *cook)  : cook(cook) {
 }

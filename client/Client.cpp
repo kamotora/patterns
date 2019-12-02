@@ -36,15 +36,8 @@ Client::Client(string name, string address, string tel) :name(std::move(name)), 
 
 }
 
-Order* Client::createNewOrder() {
-    if(currentOrder != nullptr && currentOrder->getStatus() == Status::TypeStatus::DECORATED){
-        cout << "Клиент "<<name<< "Есть неоплаченный заказ"<< endl;
-    }
-    Order *order = new Order(this,this->address, TypeDelivery::COURIER);
-    ordersHistory.push_back(order);
-    currentOrder = order;
-    cout << "Заказ №"<<order->getNumber() << " создан" << endl;
-    return order;
+IOrder* Client::createNewOrder(CreatorOrder *creator) {
+
 }
 
 const string &Client::getTel() const {
@@ -54,4 +47,27 @@ const string &Client::getTel() const {
 const string &Client::getEmail() const {
     return email;
 }
+
+Client::Client(string name, string address, string tel, string email) :Client(std::move(name),std::move(address),std::move(tel)){
+    this->email = std::move(email);
+}
+
+bool Client::equals(std::string name, std::string address, std::string tel) {
+    return this->name == name && this->address == address && this->tel == tel;
+}
+
+bool Client::equals(std::string name, std::string address, std::string tel, std::string email) {
+    return equals(name,address,tel) && this->email == email;
+}
+
+void Client::addOrder(IOrder *order) {
+    ordersHistory.push_back(order);
+    currentOrder = order;
+}
+
+const string &Client::getName() const {
+    return name;
+}
+
+
 

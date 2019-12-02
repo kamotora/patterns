@@ -7,15 +7,17 @@
 
 #include <string>
 #include <vector>
+
 using namespace std;
 
-class Product {
+class Product{
 private:
     double saleCost;
 protected:
     string name;
 public:
     Product() = default;
+    Product(double saleCost);
     Product(string name, double saleCost);
     const string &getName() const;
 
@@ -26,7 +28,8 @@ public:
     virtual void setSaleCost(double cost);
 
     virtual double getPrimeCost() const;
-    virtual vector<pair<Product *, int>> * getChild() = 0;
+    virtual vector<pair<Product *, int>> * getChild();
+
 };
 
 

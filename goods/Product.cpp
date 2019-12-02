@@ -26,3 +26,12 @@ double Product::getPrimeCost() const {
 }
 
 Product::Product(string name, double saleCost) : name(name), saleCost(saleCost){}
+
+Product::Product(double saleCost) : saleCost(saleCost) {
+
+}
+
+vector<pair<Product *, int>> *Product::getChild() {
+    return nullptr;
+}
+

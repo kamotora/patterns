@@ -13,16 +13,15 @@ protected:
     vector<pair<Product *,int>> recipe;
     double saleCost;
 public:
-    void addIngredient(Product * ingred);
+    void addIngredient(Product * ingred, int count);
     void deleteIngredient(Product * ingred);
     vector<pair<Product *, int>> * getChild() override ;
 
     double getSaleCost() const override;
 
     void setSaleCost(double saleCost) override;
-
-    void addIngredient(Product *ingred, int count);
     CookingGood(string name, double saleCost);
+    CookingGood(double saleCost);
     CookingGood(string name, double saleCost, vector<pair<Product *,int>> recipe);
 
 

@@ -12,6 +12,8 @@
 #include <stack>
 
 using namespace std;
+
+
 class ProductIterator : public Iterator {
 private:
     vector<Product *> *composite;

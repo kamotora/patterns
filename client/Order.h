@@ -14,8 +14,6 @@ class Client;
 
 
 class Order : public IOrder {
-public:
-
 private:
     vector<Product *> goods;
     Status::TypeStatus status;
@@ -29,6 +27,10 @@ public:
     Order(Client *client, TypeDelivery typeDelivery) ;
     Order(Client *client, string address, TypeDelivery typeDelivery);
     Order(Client *client, string address, TypeDelivery typeDelivery, vector<Product *> goods);
+
+    Order(vector<Product*>  goods, Status::TypeStatus status, tm * date,
+            int number, Client * client, string  address, IDeliver *deliver);
+
     Status::TypeStatus getStatus() override;
 
     void setStatus(Status::TypeStatus status) override;

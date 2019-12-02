@@ -6,7 +6,10 @@
 #define PATTERNS_COOK_H
 
 
-#include "Worker.h"
+#include "../Worker.h"
+#include "IState.h"
+#include "FreeCookState.h"
+
 
 class Cook : public Worker {
 public:
@@ -16,10 +19,13 @@ public:
     };
 private:
     TypeCookingProduct typeCookingProduct;
+    IState *state;
 public:
     Cook(string name, TypeCookingProduct typeCookingProduct);
     void cook();
+    void setState(IState *state);
 
+    TypeCookingProduct getTypeCookingProduct() const;
 };
 
 

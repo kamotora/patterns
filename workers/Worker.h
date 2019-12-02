@@ -5,12 +5,12 @@
 #ifndef PATTERNS_WORKER_H
 #define PATTERNS_WORKER_H
 
-#include <vector>
+#include <queue>
 #include "../client/IOrder.h"
 
 class Worker {
 protected:
-    vector<IOrder *> ordersQueue;
+    queue<IOrder *> ordersQueue;
     IOrder *curOrder;
     string name;
 public:
@@ -19,6 +19,8 @@ public:
     void addOrder(IOrder *order);
 
     IOrder *getCurOrder() const;
+
+    void setCurOrder(IOrder *curOrder);
 };
 
 
