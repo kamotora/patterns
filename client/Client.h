@@ -8,6 +8,7 @@
 #include <vector>
 #include "IOrder.h"
 #include "CreatorOrder.h"
+#include "ClientSnap.h"
 
 
 using namespace std;
@@ -27,7 +28,7 @@ public:
     IOrder* createNewOrder(CreatorOrder *creator);
     void pay();
     void addOrder(IOrder *order);
-    void changeInfo();
+    bool changeInfo();
     void chooseDeliveryMethod();
     void addGoodToOrder();
     void delGoodFromOrder();
@@ -42,6 +43,10 @@ public:
     bool equals(std::string name,std::string address,std::string tel);
 
     bool equals(std::string name,std::string address,std::string tel,std::string email);
+
+    ClientSnap * createSnap();
+    void restoreFromSnap(ClientSnap *snap);
+
 
 };
 

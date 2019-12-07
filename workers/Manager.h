@@ -3,11 +3,11 @@
 
 #include "Worker.h"
 #include "../client/Client.h"
-
+#include "../client/IObserver.h"
 class Order;
 class IDeliver;
 
-class Manager : public Worker {
+class Manager : public Worker, public IObserver {
 public:
     Manager() = default;
     Manager(string name);
@@ -16,6 +16,7 @@ public:
     void sendToDelivery();
     Client* addClient();
 
+    void handleEvent(Status::TypeStatus typeStatusOrder, IOrder *order) override;
 };
 
 

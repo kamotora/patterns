@@ -17,8 +17,17 @@ void Cook::cook() {
 void Cook::setState(IState *state) {
     delete this->state;
     this->state = state;
+    cook();
 }
 
 Cook::TypeCookingProduct Cook::getTypeCookingProduct() const {
     return typeCookingProduct;
+}
+
+void Cook::handleEvent(Status::TypeStatus typeStatusOrder, IOrder *order) {
+    if(typeStatusOrder == Status::TypeStatus::PAID){
+        order->setStatus(Status::TypeStatus::IN_COOKING_QUEUE);
+        addOrder(order);
+        cook();
+    }
 }

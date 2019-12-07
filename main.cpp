@@ -18,13 +18,12 @@
 #include "workers/Caller.h"
 #include "dialogs/LinuxFormDialog.h"
 #include "dialogs/ConsoleDialog.h"
+#include "client/ClientCareTaker.h"
 
 
 vector<IOrder *> orders;
 vector<Cook*> cooks;
 vector<Manager*> managers;
-
-ICaller *caller = nullptr;
 
 using namespace std;
 
@@ -52,7 +51,7 @@ string temp(Status::TypeStatus name){
     }
     return status;
 }
-
+/*
 void queueWork(){
     while(true){
         //int count = 0;
@@ -101,7 +100,7 @@ void managerWork(){
         }
     }
 }
-
+*/
 vector<Product *> products;
 void makeProducts(){
     auto *tomato = new Ingredient("Помидор",10);
@@ -168,10 +167,14 @@ int main(int argc, char *argv[]) {
     //Было раньше
     //caller = new Caller("Звонильщик Коля");
     //Стало лучше
-    caller = new NotifierAdapter("Автоматический звонильщик", telegramNotif);
+    auto caller = new NotifierAdapter("Автоматический звонильщик", telegramNotif);
     //
 
-    orders.push_back(new ProxyOrder((Order *)order1));
+    //orders.push_back(new ProxyOrder((Order *)order1));
+    ((Order *)order1)->addObserver(cook,Status::TypeStatus::PAID);
+    ((Order *)order1)->addObserver(manager,Status::TypeStatus::COOKED);
+    ((Order *)order1)->addObserver(caller,Status::TypeStatus::IN_DELIVERY_QUEUE);
+
     client->pay();
     //cook->addOrder(order1);
     /*
@@ -181,12 +184,12 @@ int main(int argc, char *argv[]) {
     order2->setTypeDelivery(TypeDelivery::DRONE);
     orders.push_back(new ProxyOrder(order2));
     */
-    thread queueThread(queueWork);
-    sleep(1);
+   //thread queueThread(queueWork);
+    //sleep(1);
 
-    thread managerThread(managerWork);
+    //thread managerThread(managerWork);
     //managerThread.detach();
-    thread cookThread(cookWork);
+    //thread cookThread(cookWork);
     //cookThread.detach();
     char answ;
     do{
@@ -194,13 +197,22 @@ int main(int argc, char *argv[]) {
         cin >> answ;
         if(answ == 'y'){
             IOrder *newOrder = Clients::createNewOrder(creator);
-            orders.push_back(newOrder);
+            ((Order *)newOrder)->addObserver(cook,Status::TypeStatus::PAID);
+            ((Order *)newOrder)->addObserver(manager,Status::TypeStatus::COOKED);
+            ((Order *)newOrder)->addObserver(caller,Status::TypeStatus::IN_DELIVERY_QUEUE);
+
+            //orders.push_back(newOrder);
             sleep(1);
             auto client1 = newOrder->getClient();
             client1->pay();
         }
     }while(answ != 'n');
-    queueThread.join();
+
+    ClientCareTaker *careTaker = new ClientCareTaker();
+    careTaker->save(client->createSnap());
+    if(!client->changeInfo())
+        client->restoreFromSnap(careTaker->restore());
+    //queueThread.join();
     cout << "Все заказы обслужены" << endl;
     return 0;
 }

@@ -12,6 +12,7 @@ Status::TypeStatus  Order::getStatus() {
 
 void Order::setStatus(Status::TypeStatus  status) {
     this->status = status;
+    notifyObservers();
 }
 
 string Order::getAddress() {
@@ -89,6 +90,21 @@ void Order::setTypeDelivery(TypeDelivery typeDelivery) {
 Order::Order(vector<Product *>  goods, Status::TypeStatus status, tm * date,
         int number, Client * client, string address,IDeliver *deliver):
         goods (std::move(goods)), status(status), date(date), number(number), client(client), address(std::move(address)), deliver(deliver) {}
+
+
+void Order::removeObserver(IObserver *observer) {
+    observers.erase(observer);
+}
+
+void Order::notifyObservers() {
+    for(auto obj:observers)
+        if(obj.second == status)
+            obj.first->handleEvent(obj.second,this);
+}
+
+void Order::addObserver(IObserver *observer, Status::TypeStatus typeStatusOrder) {
+    observers.insert(pair<IObserver *, Status::TypeStatus>(observer,typeStatusOrder));
+}
 
 
 

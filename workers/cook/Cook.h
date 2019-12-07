@@ -9,9 +9,9 @@
 #include "../Worker.h"
 #include "IState.h"
 #include "FreeCookState.h"
+#include "../../client/IObserver.h"
 
-
-class Cook : public Worker {
+class Cook : public Worker, public IObserver {
 public:
     enum TypeCookingProduct{
         SHAWARMA,
@@ -26,6 +26,8 @@ public:
     void setState(IState *state);
 
     TypeCookingProduct getTypeCookingProduct() const;
+
+    void handleEvent(Status::TypeStatus typeStatusOrder, IOrder *order) override;
 };
 
 

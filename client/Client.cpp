@@ -1,7 +1,3 @@
-//
-// Created by root on 24.10.2019.
-//
-
 #include "Client.h"
 
 #include <utility>
@@ -16,8 +12,36 @@ void Client::pay() {
     currentOrder->setStatus(Status::TypeStatus::PAID);
 }
 
-void Client::changeInfo() {
+bool Client::changeInfo() {
+    cout << "Введите новое имя (для отмены - #): ";
+    string newName;
+    cin >> newName;
+    if(newName[0] == '#')
+        return false;
+    this->name = newName;
 
+    cout << "Введите новый телефон (для отмены - #): ";
+    string tel;
+    cin >> tel;
+    if(tel[0] == '#')
+        return false;
+    this->tel = tel;
+
+    cout << "Введите новый email (для отмены - #): ";
+    string email;
+    cin >> email;
+    if(email[0] == '#')
+        return false;
+    this->email = email;
+
+    cout << "Удалить историю заказов (y,n),(для отмены - #): ";
+    string ask;
+    cin >> ask;
+    if(ask[0] == '#')
+        return false;
+    if(ask == "y")
+        ordersHistory.resize(0);
+    return true;
 }
 
 void Client::chooseDeliveryMethod() {
@@ -68,6 +92,20 @@ void Client::addOrder(IOrder *order) {
 const string &Client::getName() const {
     return name;
 }
+
+ClientSnap *Client::createSnap() {
+    return new ClientSnap(name,address,tel,ordersHistory,currentOrder,email);
+}
+
+void Client::restoreFromSnap(ClientSnap *snap) {
+    this->name = snap->name;
+    this->ordersHistory = snap->ordersHistory;
+    this->email = snap->email;
+    this->tel = snap->tel;
+    this->currentOrder = const_cast<IOrder *>(snap->currentOrder);
+    this->address = snap->address;
+}
+
 
 
 

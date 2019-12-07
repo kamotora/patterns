@@ -12,7 +12,7 @@ void BusyCookState::work() {
     }
     curOrder->setStatus(Status::TypeStatus::COOK);
     cout << "Заказ №" << curOrder->getNumber() << " готовится" << endl;
-    std::this_thread::sleep_for(std::chrono::milliseconds(rand() % 7 * 1000));
+    std::this_thread::sleep_for(std::chrono::milliseconds(rand() % 3 * 1000));
     curOrder->setStatus(Status::TypeStatus::COOKED);
     cook->setCurOrder(nullptr);
     cook->setState(new FreeCookState(cook));

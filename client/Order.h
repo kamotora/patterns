@@ -8,12 +8,14 @@
 #include "IOrder.h"
 #include "Client.h"
 #include "../workers/Delivers.h"
+#include "IObservable.h"
+#include <map>
 
 class Product;
 class Client;
 
 
-class Order : public IOrder {
+class Order : public IOrder, public IObservable {
 private:
     vector<Product *> goods;
     Status::TypeStatus status;
@@ -22,6 +24,7 @@ private:
     Client* client;
     string address;
     IDeliver *deliver;
+    std::map<IObserver *, Status::TypeStatus> observers;
 
 public:
     Order(Client *client, TypeDelivery typeDelivery) ;
@@ -51,6 +54,11 @@ public:
 
     void setTypeDelivery(TypeDelivery typeDelivery) override;
 
+    void addObserver(IObserver *observer,Status::TypeStatus typeStatusOrder) override;
+
+    void removeObserver(IObserver *observer) override;
+
+    void notifyObservers() override;
 };
 
 

@@ -7,15 +7,18 @@
 
 
 #include "../workers/ICaller.h"
+#include "../client/IObserver.h"
 #include "INotifier.h"
 
-class NotifierAdapter : public ICaller {
+class NotifierAdapter : public ICaller , public IObserver{
 private:
     INotifier *notifier;
     string name;
 public:
     NotifierAdapter(string name, INotifier *iNotifier);
     void call(IOrder *order) override ;
+
+    void handleEvent(Status::TypeStatus typeStatusOrder, IOrder *order) override;
 };
 
 
