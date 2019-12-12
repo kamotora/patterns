@@ -8,8 +8,7 @@ void Client::addGoodToOrder() {
 }
 
 void Client::pay() {
-    cout << "Заказ №" << currentOrder->getNumber() << " оплачен" << endl;
-    currentOrder->setStatus(Status::TypeStatus::PAID);
+    typePay->execute();
 }
 
 bool Client::changeInfo() {
@@ -104,6 +103,10 @@ void Client::restoreFromSnap(ClientSnap *snap) {
     this->tel = snap->tel;
     this->currentOrder = const_cast<IOrder *>(snap->currentOrder);
     this->address = snap->address;
+}
+
+void Client::setTypePay(ICommand *typePay) {
+    Client::typePay = typePay;
 }
 
 

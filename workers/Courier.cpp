@@ -26,3 +26,11 @@ IOrder *Courier::getCurOrder(){
     return curOrder;
 }
 
+void Courier::prepareCar() {
+    std::cout << "Курьер заправил машину" << std::endl;
+}
+
+void Courier::accept(IVisitor *visitor) {
+    visitor->prepare(this);
+}
+

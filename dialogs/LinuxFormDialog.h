@@ -31,7 +31,10 @@ private:
     IOrder *order = nullptr;
     static Gtk::Main app;
 public:
-    IOrder *showDialog(){
+    ICommand * showDialogForPay(){
+        return nullptr;
+    }
+    IOrder *showDialogForOrder(){
 
         app.run(*window);
         delete window;

@@ -7,8 +7,9 @@
 #include <string>
 #include <vector>
 #include "IOrder.h"
-#include "CreatorOrder.h"
+#include "../dialogs/CreatorOrder.h"
 #include "ClientSnap.h"
+#include "commands/ICommand.h"
 
 
 using namespace std;
@@ -22,6 +23,7 @@ private:
     string email;
     vector<IOrder *> ordersHistory;
     IOrder * currentOrder = nullptr;
+    ICommand *typePay;
 public:
     Client(string name, string address, string tel);
     Client(string name, string address, string tel,string email);
@@ -47,6 +49,7 @@ public:
     ClientSnap * createSnap();
     void restoreFromSnap(ClientSnap *snap);
 
+    void setTypePay(ICommand *typePay);
 
 };
 

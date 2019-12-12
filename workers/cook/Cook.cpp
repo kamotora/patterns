@@ -1,8 +1,9 @@
 #include <iostream>
 #include <thread>
+#include <utility>
 #include "Cook.h"
 
-Cook::Cook(string name, Cook::TypeCookingProduct typeCookingProduct) : Worker(name) {
+Cook::Cook(string name, Cook::TypeCookingProduct typeCookingProduct) : Worker(std::move(name)) {
     this->typeCookingProduct = typeCookingProduct;
     this->state = new FreeCookState(this);
 }
@@ -30,4 +31,12 @@ void Cook::handleEvent(Status::TypeStatus typeStatusOrder, IOrder *order) {
         addOrder(order);
         cook();
     }
+}
+
+void Cook::prepareKitchen() {
+    std::cout << "Повар " << name << "  всё подготовил на кухне" << std::endl;
+}
+
+void Cook::accept(IVisitor *visitor) {
+    visitor->prepare(this);
 }

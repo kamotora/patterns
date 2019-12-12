@@ -16,7 +16,7 @@ void CookingGood::setSaleCost(double saleCost) {
     this->saleCost = saleCost;
 }
 
-vector<pair<Product *, int>> * CookingGood::getChild() {
+vector<Product *> * CookingGood::getChild() {
     /*
     vector<Product *> res(recipe.size());
     for(pair<Product *, int> pair : recipe)
@@ -27,7 +27,7 @@ vector<pair<Product *, int>> * CookingGood::getChild() {
 
 void CookingGood::deleteIngredient(Product *ingred) {
     for(int i = 0; i < recipe.size(); i++)
-        if(recipe[i].first == ingred){
+        if(recipe[i] == ingred){
             recipe.erase(recipe.begin() + i);
             break;
         }
@@ -38,13 +38,13 @@ CookingGood::CookingGood(string name, double saleCost) {
     this->saleCost = saleCost;
 }
 
-CookingGood::CookingGood(string name, double saleCost, vector<pair<Product *, int>> recipe) : CookingGood(std::move(name),saleCost){
+CookingGood::CookingGood(string name, double saleCost, vector<Product *> recipe) : CookingGood(std::move(name),saleCost){
     this->recipe = std::move(recipe);
 }
 
 CookingGood::CookingGood(double saleCost) : Product(saleCost) {
 }
 
-void CookingGood::addIngredient(Product *ingred,int count) {
-    recipe.push_back(make_pair(ingred,count));
+void CookingGood::addIngredient(Product *ingred) {
+    recipe.push_back(ingred);
 }

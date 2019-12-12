@@ -16,21 +16,29 @@
 #include "../client/Order.h"
 #include "../client/OrderBuilder.h"
 #include "../client/Clients.h"
-
+#include "../client/commands/ICommand.h"
+#include "../client/commands/CardPay.h"
+#include "../client/commands/WebmoneyPay.h"
 
 
 class ConsoleDialog : public IDialog{
 protected:
     std::string ask(std::string question);
     IOrder *order = nullptr;
+    ICommand *typePayment = nullptr;
     OrderBuilder orderBuilder;
+    Client * client = nullptr;
 public:
-    IOrder *showDialog() override;
+    IOrder *showDialogForOrder() override;
     void askAboutGoods();
 
     void askAboutPizza();
 
     bool askAboutTypeConcrPizza(string namePizza);
+
+    ICommand *showDialogForPay() override;
+
+    bool askAboutDataPay(int typePay);
 };
 
 

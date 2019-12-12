@@ -7,22 +7,22 @@
 Product * ProductIterator::getNext() {
     Product * cur = nullptr;
     if(!myStack.empty()){
-        curPair = myStack.top();
+        curProduct = myStack.top();
         myStack.pop();
-        cur = curPair.first;
+        cur = curProduct;
     }
     else if(hasNext()){
         Product * product = composite->at(curPos++);
-        vector<pair<Product *,int>> *childs = product->getChild();
+        vector<Product *> *childs = product->getChild();
         if(!childs->empty()) {
-            for (pair<Product *, int> pair : *childs)
-                myStack.push(pair);
+            for (Product * prod : *childs)
+                myStack.push(prod);
                 //myStack.push(pair);
-            curPair = myStack.top();
+            curProduct = myStack.top();
             myStack.pop();
-            cur = curPair.first;
+            cur = curProduct;
         } else{
-            curPair = make_pair(product,1);
+            curProduct = product;
             cur = product;
         }
 
@@ -52,6 +52,17 @@ ProductIterator::ProductIterator(vector<Product *> *composite) {
 }
 
 double ProductIterator::getPrimeCostCur() {
-    return curPair.first->getPrimeCost()*curPair.second;
+    return curProduct->getPrimeCost();
+}
+
+void ProductIterator::sort(bool (*comparator)(Product *, Product *)) {
+    if(typeSort == nullptr)
+        Logger::getLogger()->message("Ошибка! Не выбран тип сортировки", Logger::ERR);
+    else
+        typeSort->sort(composite,comparator);
+}
+
+void ProductIterator::setTypeSort(IStrategy *typeSort) {
+    this->typeSort = typeSort;
 }
 

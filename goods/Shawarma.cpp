@@ -4,15 +4,17 @@
 
 #include "Shawarma.h"
 
-Shawarma::Shawarma(string name, double saleCost, int kcal) : CookingGood(name,saleCost){
+#include <utility>
+
+Shawarma::Shawarma(string name, double saleCost, int kcal) : CookingGood(std::move(name),saleCost){
     this->kcal = kcal;
 }
 
 Product Shawarma::clone() {
-    vector<pair<Product *,int>> newRecipe(recipe);
+    vector<Product *> newRecipe(recipe);
     return Shawarma(name,saleCost,kcal,newRecipe);
 }
 
-Shawarma::Shawarma(string name, double saleCost, int kcal, vector<pair<Product *, int>> recipe) : Shawarma(name,saleCost,kcal) {
+Shawarma::Shawarma(string name, double saleCost, int kcal, vector<Product *> recipe) : Shawarma(name,saleCost,kcal) {
     this->recipe = recipe;
 }

@@ -1,10 +1,5 @@
 #include "Order.h"
-#include "../workers/Courier.h"
-#include "../workers/Drone.h"
-#include "../goods/ProductIterator.h"
 
-#include <utility>
-#include <iostream>
 
 Status::TypeStatus  Order::getStatus() {
     return status;
@@ -28,6 +23,8 @@ double Order::countPrice() {
     for(Product * good : goods)
         salePrice += good->getSaleCost();
     ProductIterator *iterator = new ProductIterator(&goods);
+    iterator->setTypeSort(new BubbleSort());
+    iterator->sort(IStrategy::standartComparator);
     double primePrice = 0.0;
     while(iterator->hasNext()){
         iterator->getNext();

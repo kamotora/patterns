@@ -28,7 +28,7 @@ public:
     virtual void setSaleCost(double cost);
 
     virtual double getPrimeCost() const;
-    virtual vector<pair<Product *, int>> * getChild();
+    virtual vector<Product *> * getChild();
 
 };
 

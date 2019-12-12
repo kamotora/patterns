@@ -13,10 +13,6 @@ void Manager::packOrder() {
     std::cout << "Заказ №" << curOrder->getNumber() << " упаковывается" << endl;
 }
 
-Client *Manager::addClient() {
-    return nullptr;
-}
-
 void Manager::handleEvent(Status::TypeStatus typeStatusOrder, IOrder *order) {
     if(typeStatusOrder == Status::TypeStatus::COOKED){
         this->curOrder = order;
@@ -24,4 +20,12 @@ void Manager::handleEvent(Status::TypeStatus typeStatusOrder, IOrder *order) {
         order->setStatus(Status::TypeStatus::IN_DELIVERY_QUEUE);
         sendToDelivery();
     }
+}
+
+void Manager::preparePacks() {
+    std::cout << "Менеджер " << name << " готовит упаковки к использованию" << std::endl;
+}
+
+void Manager::accept(IVisitor *visitor) {
+    visitor->prepare(this);
 }

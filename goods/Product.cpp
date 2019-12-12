@@ -20,7 +20,7 @@ void Product::setSaleCost(double cost) {
     this->saleCost = cost;
 }
 
-//TODO:Шо указывать?
+
 double Product::getPrimeCost() const {
     return saleCost;
 }
@@ -31,7 +31,7 @@ Product::Product(double saleCost) : saleCost(saleCost) {
 
 }
 
-vector<pair<Product *, int>> *Product::getChild() {
+vector<Product *> *Product::getChild() {
     return nullptr;
 }
 

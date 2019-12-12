@@ -13,7 +13,7 @@ protected:
     int kcal;
 public:
     Shawarma(string name, double saleCost, int kcal);
-    Shawarma(string name, double saleCost, int kcal, vector<pair<Product *,int>> recipe);
+    Shawarma(string name, double saleCost, int kcal, vector<Product *> recipe);
 
     Product clone() override;
 };

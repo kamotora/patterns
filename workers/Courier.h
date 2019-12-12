@@ -4,8 +4,10 @@
 
 #include "IDeliver.h"
 #include "Worker.h"
+#include "IVisitorElement.h"
+#include "IVisitor.h"
 
-class Courier : public Worker, public IDeliver{
+class Courier : public Worker, public IDeliver, public IVisitorElement{
 private:
     IOrder *curOrder = nullptr;
 public:
@@ -13,6 +15,9 @@ public:
     void getPaid();
     IOrder *getCurOrder();
     void deliver(IOrder *order) override ;
+    void prepareCar();
+
+    void accept(IVisitor *visitor);
 };
 
 

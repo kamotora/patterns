@@ -9,7 +9,7 @@
 #include "Drone.h"
 
 void Drone::goToCharge() {
-
+    std::cout << "Дрон № "<< num << " заряжается" << std::endl;
 }
 
 void Drone::deliver(IOrder *order) {
@@ -41,5 +41,9 @@ int Drone::getChargeLevel() const {
 
 IOrder *Drone::getCurOrder() {
     return curOrder;
+}
+
+void Drone::accept(IVisitor *visitor) {
+    visitor->prepare(this);
 }
 

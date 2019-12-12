@@ -10,7 +10,7 @@ double Ingredient::getPrimeCost() const {
     return cost;
 }
 
-vector<pair<Product *, int>> *Ingredient::getChild() {
+vector<Product *> *Ingredient::getChild() {
     return nullptr;
 }
 

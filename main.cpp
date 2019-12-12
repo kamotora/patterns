@@ -19,6 +19,11 @@
 #include "dialogs/LinuxFormDialog.h"
 #include "dialogs/ConsoleDialog.h"
 #include "client/ClientCareTaker.h"
+#include "workers/PrepareWorkersVisitor.h"
+#include "log/Logger.h"
+#include "log/ConsoleLogger.h"
+#include "log/EmailLogger.h"
+#include "log/SmsLogger.h"
 
 
 vector<IOrder *> orders;
@@ -112,46 +117,72 @@ void makeProducts(){
     auto *meatPig = new Ingredient("Свинина",25);
 
     auto product1 = new CookingGood("Продукт 1",350);
-    product1->addIngredient(tomato,3);
-    product1->addIngredient(cabbage,2);
-    product1->addIngredient(meat,3);
+    product1->addIngredient(tomato);
+    product1->addIngredient(tomato);
+    product1->addIngredient(tomato);
+    product1->addIngredient(cabbage);
+    product1->addIngredient(meat);
+    product1->addIngredient(meat);
 
     auto product2 = new CookingGood("Продукт 2",400);
-    product2->addIngredient(cucumber,5);
-    product2->addIngredient(cheese,2);
-    product2->addIngredient(meatCow,4);
-    product2->addIngredient(tomato,2);
-
+    product2->addIngredient(cucumber);
+    product2->addIngredient(cheese);
+    product2->addIngredient(meatCow);
+    product2->addIngredient(tomato);
+    product2->addIngredient(cucumber);
+    product2->addIngredient(cheese);
+    product2->addIngredient(meatCow);
+    product2->addIngredient(tomato);
 
     auto product3 = new CookingGood("Продукт 2",500);
-    product3->addIngredient(meatPig,3);
-    product3->addIngredient(meat,3);
-    product3->addIngredient(cheese,2);
-    product3->addIngredient(meatCow,2);
-    product3->addIngredient(tomato,2);
+    product3->addIngredient(meatPig);
+    product3->addIngredient(meat);
+    product3->addIngredient(meatPig);
+    product3->addIngredient(meat);
+    product3->addIngredient(meatPig);
+    product3->addIngredient(meat);
+    product3->addIngredient(meatPig);
+    product3->addIngredient(meat);
+    product3->addIngredient(cheese);
+    product3->addIngredient(meatCow);
+    product3->addIngredient(tomato);
 
     products = {product1,product2,product3};
 }
 
 int main(int argc, char *argv[]) {
+    vector<IVisitorElement *> forVisitor;
     srand(static_cast<unsigned int>(time(nullptr)));
     Courier *courier = new Courier("Вася");
     Cook *cook = new Cook("Повар",Cook::TypeCookingProduct::PIZZA);
     cooks.push_back(cook);
     Drone *drone = new Drone(1);
+    Manager *manager = new Manager("Менеджер Саша");
+    managers.push_back(manager);
     Delivers::getInstance()->addDrone(drone);
     Delivers::getInstance()->addCourier(courier);
     vector<IDeliver*> delivers;
     delivers.push_back(drone);
     delivers.push_back(courier);
+
+    IVisitor* visitor = new PrepareWorkersVisitor();
+    forVisitor.push_back(cook);
+    forVisitor.push_back(drone);
+    forVisitor.push_back(manager);
+    forVisitor.push_back(courier);
+    for(IVisitorElement *visitorElement:forVisitor)
+        visitorElement->accept(visitor);
+
+    Logger *logger = new ConsoleLogger(Logger::DEBUG);
+    logger->setNext(new EmailLogger(Logger::NOTIF));
+    logger->setNext(new SmsLogger(Logger::ERR));
+    Logger::setStartLogger(logger);
     //лр5
     CreatorOrder *creator = new CreatorOrder(new ConsoleDialog());
     IOrder *order1 = Clients::createNewOrder(creator);
     Client *client = order1->getClient();
     //end лр5
 
-    Manager *manager = new Manager("Менеджер Саша");
-    managers.push_back(manager);
     //лр4
     makeProducts();
     /*
@@ -213,7 +244,7 @@ int main(int argc, char *argv[]) {
     if(!client->changeInfo())
         client->restoreFromSnap(careTaker->restore());
     //queueThread.join();
-    cout << "Все заказы обслужены" << endl;
+    Logger::getLogger()->message("Все заказы обслужены", Logger::NOTIF);
     return 0;
 }
 

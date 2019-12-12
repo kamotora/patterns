@@ -12,11 +12,11 @@ class Ingredient : public Product {
 protected:
     struct tm * shelfTime;
     int count;
-    int cost;
+    double cost;
 public:
     double getPrimeCost() const override;
 
-    vector<pair<Product *, int>> * getChild() override;
+    vector<Product *> * getChild() override;
     Ingredient(string name, double cost);
     Ingredient(string name, double cost, int count);
 };

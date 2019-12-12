@@ -10,6 +10,12 @@
 #include "../workers/Delivers.h"
 #include "IObservable.h"
 #include <map>
+#include "../workers/Courier.h"
+#include "../workers/Drone.h"
+#include "../goods/ProductIterator.h"
+#include "../goods/sort/BubbleSort.h"
+#include <utility>
+#include <iostream>
 
 class Product;
 class Client;

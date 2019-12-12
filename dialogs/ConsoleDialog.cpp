@@ -4,7 +4,30 @@
 
 #include "ConsoleDialog.h"
 
-IOrder *ConsoleDialog::showDialog() {
+ICommand *ConsoleDialog::showDialogForPay() {
+    int answ1;
+    do{
+        std::cout << "Тип оплаты:\n\t1) Карта\n\t2) Webmoney\n\t3) Назад\nВведите 1 или 2 или 3: ";
+        std::cin >> answ1;
+        switch(answ1){
+            case 1:
+                askAboutDataPay(1);
+                break;
+            case 2:
+                askAboutDataPay(2);
+                break;
+            case 3:
+                break;
+            default:
+                std::cout << "Некорректный ввод. Повторите ввод" << std::endl;
+        }
+    }
+    while(typePayment == nullptr);
+    client->setTypePay(typePayment);
+    return typePayment;
+}
+
+IOrder *ConsoleDialog::showDialogForOrder() {
     std::string name =  ask("Введите имя : ");
     std::string address =  ask("Введите адрес доставки : ");
     std::string tel =  ask("Введите номер телефона : ");
@@ -26,12 +49,13 @@ IOrder *ConsoleDialog::showDialog() {
                 std::cout << "Некорректный ввод. Повторите ввод" << std::endl;
         }
     }while(typeDelivery == TypeDelivery::NONE);
-    //order = new Order(Clients::getClient(name,address,tel,email),typeDelivery);
-    orderBuilder.setClient(Clients::getClient(name,address,tel,email));
+    client = Clients::getClient(name,address,tel,email);
+    orderBuilder.setClient(client);
     orderBuilder.setTypeDelivery(typeDelivery);
     askAboutGoods();
     //return order;
-    return orderBuilder.build();
+    order =  orderBuilder.build();
+    return order;
 }
 
 std::string ConsoleDialog::ask(std::string question){
@@ -110,4 +134,32 @@ bool ConsoleDialog::askAboutTypeConcrPizza(string namePizza){
         }
     }
     while(true);
+}
+
+
+bool ConsoleDialog::askAboutDataPay(int typePay){
+    switch(typePay){
+        case 1:{
+            std::string num,name, cvv;
+            std::cout << "Введите номер карты: ";
+            std::cin >> num;
+            std::cout << "Введите NAME SURNAME: ";
+            std::cin >> name;
+            std::cout << "Введите CVV: ";
+            std::cin >> cvv;
+            typePayment = new CardPay(num,name,cvv,order);
+            return true;
+        }
+        case 2:{
+            std::string from,to;
+            std::cout << "Введите номер кошелька отправителя: ";
+            std::cin >> from;
+            std::cout << "Введите номер кошелька получателя: ";
+            std::cin >> to;
+            typePayment = new WebmoneyPay(from,to,order);
+            return true;
+        }
+        default:
+            std::cout << "Некорректный ввод. Повторите ввод" << std::endl;
+    }
 }

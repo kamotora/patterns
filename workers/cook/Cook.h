@@ -10,8 +10,10 @@
 #include "IState.h"
 #include "FreeCookState.h"
 #include "../../client/IObserver.h"
+#include "../IVisitorElement.h"
+#include "../IVisitor.h"
 
-class Cook : public Worker, public IObserver {
+class Cook : public Worker, public IObserver, public IVisitorElement {
 public:
     enum TypeCookingProduct{
         SHAWARMA,
@@ -28,6 +30,11 @@ public:
     TypeCookingProduct getTypeCookingProduct() const;
 
     void handleEvent(Status::TypeStatus typeStatusOrder, IOrder *order) override;
+
+    void prepareKitchen();
+
+    void accept(IVisitor *visitor) override;
+
 };
 
 
