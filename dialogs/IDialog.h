@@ -11,7 +11,7 @@ class IOrder;
 class IDialog {
 public:
     virtual IOrder * showDialogForOrder() = 0;
-    virtual ICommand *showDialogForPay() = 0;
+    virtual ICommand *showDialogForPay(IOrder *order) = 0;
 };
 
 

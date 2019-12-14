@@ -65,6 +65,8 @@ public:
     void removeObserver(IObserver *observer) override;
 
     void notifyObservers() override;
+
+    void setClient(Client *client) override ;
 };
 
 

@@ -62,3 +62,7 @@ IDeliver *ProxyOrder::getDeliver() {
 void ProxyOrder::setTypeDelivery(TypeDelivery typeDelivery) {
     order->setTypeDelivery(typeDelivery);
 }
+
+void ProxyOrder::setClient(Client *client) {
+    order->setClient(client);
+}

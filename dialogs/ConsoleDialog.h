@@ -36,9 +36,9 @@ public:
 
     bool askAboutTypeConcrPizza(string namePizza);
 
-    ICommand *showDialogForPay() override;
+    ICommand *showDialogForPay(IOrder *order) override;
 
-    bool askAboutDataPay(int typePay);
+    bool askAboutDataPay(int typePay, IOrder *order);
 };
 
 

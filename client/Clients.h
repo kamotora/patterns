@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include "Client.h"
+#include "../dialogs/CreatorOrder.h"
 
 class Clients {
 private:

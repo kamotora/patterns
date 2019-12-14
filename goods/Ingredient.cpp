@@ -4,7 +4,6 @@
 
 #include "Ingredient.h"
 
-#include <utility>
 
 double Ingredient::getPrimeCost() const {
     return cost;
@@ -21,4 +20,14 @@ Ingredient::Ingredient(string name, double cost){
 
 Ingredient::Ingredient(string name, double cost, int count) : Ingredient(std::move(name),cost){
     this->count = count;
+}
+
+string Ingredient::toString() {
+    std::stringstream stream;
+    stream << name << " " << cost << " руб." << std::endl;
+    return stream.str();
+}
+
+double Ingredient::getSaleCost() const {
+    return cost;
 }

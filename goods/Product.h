@@ -29,7 +29,7 @@ public:
 
     virtual double getPrimeCost() const;
     virtual vector<Product *> * getChild();
-
+    virtual std::string toString();
 };
 
 

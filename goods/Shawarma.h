@@ -7,15 +7,24 @@
 
 #include "ICloneable.h"
 #include "CookingGood.h"
+#include "SizeShawarma.h"
 
 class Shawarma : public CookingGood, public ICloneable{
 protected:
-    int kcal;
+    SizeShawarma *sizeShawarma;
 public:
-    Shawarma(string name, double saleCost, int kcal);
-    Shawarma(string name, double saleCost, int kcal, vector<Product *> recipe);
+    Shawarma(string name, double saleCost, SizeShawarma *size);
+    Shawarma(string name, double saleCost, SizeShawarma *size, vector<Product *> recipe);
 
-    Product clone() override;
+    Product* clone() override;
+
+    string toString() override;
+
+    double getSaleCost() const override;
+
+    void setSizeShawarma(SizeShawarma *sizeShawarma);
+
+    bool equals(string name, double saleCost, SizeShawarma *size);
 };
 
 

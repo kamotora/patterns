@@ -30,7 +30,7 @@ double Order::countPrice() {
         iterator->getNext();
         primePrice += iterator->getPrimeCostCur();
     }
-    std::cout << "Для заказа №" << this->number << " цена продажи = " << salePrice << ", цена себестоимости = " << primePrice << std::endl;
+    //std::cout << "Для заказа №" << this->number << " цена продажи = " << salePrice << ", цена себестоимости = " << primePrice << std::endl;
     return salePrice;
 }
 
@@ -48,13 +48,15 @@ vector<Product *> Order::getGoods() {
 
 
 Order::Order(Client *client, TypeDelivery typeDelivery) : client(client){
-    address = client->getAddress();
+    if(client != nullptr)
+        address = client->getAddress();
     status = Status::TypeStatus::DECORATED;
     time_t timeInSeconds;
     time(&timeInSeconds);
     date = localtime(&timeInSeconds);
     number = rand() % 100;
-    setTypeDelivery(typeDelivery);
+    if(typeDelivery != NONE)
+        setTypeDelivery(typeDelivery);
 }
 
 Order::Order(Client *client, string address, TypeDelivery typeDelivery) : Order(client,typeDelivery){
@@ -103,5 +105,8 @@ void Order::addObserver(IObserver *observer, Status::TypeStatus typeStatusOrder)
     observers.insert(pair<IObserver *, Status::TypeStatus>(observer,typeStatusOrder));
 }
 
+void Order::setClient(Client *client) {
+    this->client = client;
+}
 
 

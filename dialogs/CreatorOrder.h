@@ -6,6 +6,7 @@
 #define PATTERNS_CREATORORDER_H
 
 #include "IDialog.h"
+#include "../client/Client.h"
 
 class IOrder;
 
@@ -16,7 +17,7 @@ protected:
 public:
     CreatorOrder(IDialog *dialog);
     virtual IOrder * createNewOrder();
-    virtual void chooseTypePayment();
+    void chooseTypePayment(IOrder *order);
 };
 
 

@@ -9,7 +9,7 @@ class Product;
 
 class ICloneable {
 public:
-    virtual Product clone() = 0;
+    virtual Product *clone() = 0;
 };
 
 

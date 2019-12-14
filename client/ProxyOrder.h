@@ -33,6 +33,8 @@ public:
     IDeliver *getDeliver() override;
 
     void setTypeDelivery(TypeDelivery typeDelivery) override;
+
+    void setClient(Client *client) override;
 };
 
 

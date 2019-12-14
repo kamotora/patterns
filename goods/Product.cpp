@@ -35,3 +35,7 @@ vector<Product *> *Product::getChild() {
     return nullptr;
 }
 
+std::string Product::toString() {
+    return name;
+}
+

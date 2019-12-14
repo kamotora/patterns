@@ -154,10 +154,10 @@ int main(int argc, char *argv[]) {
     vector<IVisitorElement *> forVisitor;
     srand(static_cast<unsigned int>(time(nullptr)));
     Courier *courier = new Courier("Вася");
-    Cook *cook = new Cook("Повар",Cook::TypeCookingProduct::PIZZA);
+    Cook *cook = new Cook("Петя",Cook::TypeCookingProduct::PIZZA);
     cooks.push_back(cook);
     Drone *drone = new Drone(1);
-    Manager *manager = new Manager("Менеджер Саша");
+    Manager *manager = new Manager("Саша");
     managers.push_back(manager);
     Delivers::getInstance()->addDrone(drone);
     Delivers::getInstance()->addCourier(courier);
@@ -177,9 +177,8 @@ int main(int argc, char *argv[]) {
     logger->setNext(new EmailLogger(Logger::NOTIF));
     logger->setNext(new SmsLogger(Logger::ERR));
     Logger::setStartLogger(logger);
-    //лр5
-    CreatorOrder *creator = new CreatorOrder(new ConsoleDialog());
-    IOrder *order1 = Clients::createNewOrder(creator);
+
+    IOrder *order1 = Clients::createNewOrder(new CreatorOrder(LinuxFormDialog::getInstance()));
     Client *client = order1->getClient();
     //end лр5
 
@@ -227,7 +226,10 @@ int main(int argc, char *argv[]) {
         cout << "Ещё заказ?(y,n)" << endl;
         cin >> answ;
         if(answ == 'y'){
-            IOrder *newOrder = Clients::createNewOrder(creator);
+            IOrder *newOrder = Clients::createNewOrder(new CreatorOrder(LinuxFormDialog::getInstance()));
+            if(newOrder == nullptr){
+                cout << "Завершаем работу";
+            }
             ((Order *)newOrder)->addObserver(cook,Status::TypeStatus::PAID);
             ((Order *)newOrder)->addObserver(manager,Status::TypeStatus::COOKED);
             ((Order *)newOrder)->addObserver(caller,Status::TypeStatus::IN_DELIVERY_QUEUE);

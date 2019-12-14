@@ -14,6 +14,7 @@ void WebmoneyPay::execute() {
         return;
     }
     double sum = order->countPrice();
+
     cout.precision(2);
 
     std::cout << "Платим за заказ № "<< order->getNumber() << " c Webmoney кошелька "<< from <<". Сумма оплаты: " << sum << std::endl;

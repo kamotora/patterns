@@ -59,9 +59,7 @@ Client::Client(string name, string address, string tel) :name(std::move(name)), 
 
 }
 
-IOrder* Client::createNewOrder(CreatorOrder *creator) {
 
-}
 
 const string &Client::getTel() const {
     return tel;

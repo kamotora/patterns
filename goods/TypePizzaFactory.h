@@ -23,6 +23,9 @@ public:
         pizzaTypes.push_back(type);
         return type;
     }
+    static std::vector<TypePizza *> &getAllTypes(){
+        return pizzaTypes;
+    }
 };
 
 

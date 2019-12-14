@@ -22,6 +22,7 @@ public:
     virtual vector<Product *> getGoods() = 0;
     virtual IDeliver *getDeliver() = 0;
     virtual void setTypeDelivery(TypeDelivery typeDelivery) = 0;
+    virtual void setClient(Client *client) = 0;
     //virtual void deleteGood(Product * good) = 0;
 };
 

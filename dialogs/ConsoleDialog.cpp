@@ -4,17 +4,17 @@
 
 #include "ConsoleDialog.h"
 
-ICommand *ConsoleDialog::showDialogForPay() {
+ICommand *ConsoleDialog::showDialogForPay(IOrder *order) {
     int answ1;
     do{
         std::cout << "Тип оплаты:\n\t1) Карта\n\t2) Webmoney\n\t3) Назад\nВведите 1 или 2 или 3: ";
         std::cin >> answ1;
         switch(answ1){
             case 1:
-                askAboutDataPay(1);
+                askAboutDataPay(1, order);
                 break;
             case 2:
-                askAboutDataPay(2);
+                askAboutDataPay(2, order);
                 break;
             case 3:
                 break;
@@ -23,8 +23,7 @@ ICommand *ConsoleDialog::showDialogForPay() {
         }
     }
     while(typePayment == nullptr);
-    client->setTypePay(typePayment);
-    return typePayment;
+   return typePayment;
 }
 
 IOrder *ConsoleDialog::showDialogForOrder() {
@@ -81,7 +80,7 @@ void ConsoleDialog::askAboutGoods(){
                 askAboutPizza();
                 break;
             case 2:
-                orderBuilder.addGood(new Shawarma("Шаурма",140,500));
+                //orderBuilder.addGood(new Shawarma("Шаурма",140,500));
                 break;
             case 3:
                 exit = true;
@@ -137,7 +136,7 @@ bool ConsoleDialog::askAboutTypeConcrPizza(string namePizza){
 }
 
 
-bool ConsoleDialog::askAboutDataPay(int typePay){
+bool ConsoleDialog::askAboutDataPay(int typePay, IOrder *order){
     switch(typePay){
         case 1:{
             std::string num,name, cvv;

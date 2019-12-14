@@ -7,7 +7,6 @@
 #include <string>
 #include <vector>
 #include "IOrder.h"
-#include "../dialogs/CreatorOrder.h"
 #include "ClientSnap.h"
 #include "commands/ICommand.h"
 
@@ -27,7 +26,6 @@ private:
 public:
     Client(string name, string address, string tel);
     Client(string name, string address, string tel,string email);
-    IOrder* createNewOrder(CreatorOrder *creator);
     void pay();
     void addOrder(IOrder *order);
     bool changeInfo();
