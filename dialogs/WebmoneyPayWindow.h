@@ -27,8 +27,8 @@ private:
     WebmoneyPay *pay = nullptr;
 public:
     static WebmoneyPayWindow* getInstance(){
-
-        Gtk::Builder::create_from_file("/home/artem/patterns/dialogs/test.glade")->get_widget_derived("webmoneyPayWindow", webmoneyWindow);
+        if(webmoneyWindow == nullptr)
+            Gtk::Builder::create_from_file("/home/artem/patterns/dialogs/test.glade")->get_widget_derived("webmoneyPayWindow", webmoneyWindow);
         return webmoneyWindow;
     }
 
@@ -58,7 +58,7 @@ public:
         std::string takerPocket = takerField->get_text();
         if(senderPocket.empty() || takerPocket.empty()){
             Logger::getLogger()->message("Один из кошельков не указан", Logger::NOTIF);
-            MyMessageDialog::showMsg("Один из кошельков не указан");
+            new MyMessageDialog("Один из кошельков не указан");
             return;
         }
         pay = new WebmoneyPay(senderPocket, takerPocket, order);

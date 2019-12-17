@@ -21,14 +21,13 @@
 #include "ShawarmaDialog.h"
 #include "WebmoneyPayWindow.h"
 #include "CardPayWindow.h"
-#include "MyMessageDialog.h"
 
 
 class LinuxFormDialog : public IDialog,  public Gtk::Window{
 private:
 
     static LinuxFormDialog *window;
-    Gtk::Entry *nameTextField, *telTextField, *addressTextField;
+    Gtk::Entry *nameTextField, *telTextField, *addressTextField, *emailTextField;
     Gtk::TextView *goodsList;
     Gtk::RadioButton *courierRadioButton, *dronRadioButton, *cardRB, *webmoneyRB;
     Gtk::CheckButton *smsCheckBox, *telCheckBox, *telegramCheckBox;
@@ -37,14 +36,14 @@ private:
     IOrder *order;
     static Gtk::Main app;
 public:
-    ICommand * showDialogForPay(IOrder *order){
+    ICommand * showDialogForPay(IOrder *payOrder){
         ICommand *res;
         if(cardRB->get_active()){
-            CardPayWindow::getInstance()->setOrder(order);
+            CardPayWindow::getInstance()->setOrder(payOrder);
             res =  CardPayWindow::getInstance()->show();
         }
         else{
-            WebmoneyPayWindow::getInstance()->setOrder(order);
+            WebmoneyPayWindow::getInstance()->setOrder(payOrder);
             res = WebmoneyPayWindow::getInstance()->showWindow();
         }
         app.quit();
@@ -66,6 +65,7 @@ public:
         builder->get_widget("nameTextField", nameTextField);
         builder->get_widget("telTextField", telTextField);
         builder->get_widget("addressTextField", addressTextField);
+        builder->get_widget("emailTextField", emailTextField);
 
         builder->get_widget("courierRadioButton", courierRadioButton);
         builder->get_widget("dronRadioButton", dronRadioButton);
@@ -101,12 +101,30 @@ private:
 
     void createNewOrder(){
         string name = nameTextField->get_text();
+        if(name.empty()) {
+            new MyMessageDialog("Укажите имя клиента");
+            return;
+        }
         string tel = telTextField->get_text();
+        if(tel.empty()) {
+            new MyMessageDialog("Укажите номер телефона");
+            return;
+        }
         string address = addressTextField->get_text();
-        Client *client = Clients::getClient(name,address,tel);
+        if(address.empty()) {
+            new MyMessageDialog("Укажите адрес");
+            return;
+        }
+        string email = emailTextField->get_text();
+        Client *client;
+        if(email.empty())
+             client = Clients::getClient(name,address,tel);
+        else
+            client = Clients::getClient(name,address,tel, email);
         TypeDelivery typeDelivery = courierRadioButton->get_active() ? TypeDelivery::COURIER : TypeDelivery::DRONE;
-        if(order == nullptr){
-            MyMessageDialog::showMsg("В заказе нет ни одного продукта");
+        if(order == nullptr || order->getGoods().empty()){
+            new MyMessageDialog("В заказе нет ни одного продукта");
+            return;
         }
         else{
             order->setClient(client);

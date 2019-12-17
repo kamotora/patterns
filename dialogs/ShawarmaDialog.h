@@ -1,7 +1,3 @@
-//
-// Created by artem on 12.12.2019.
-//
-
 #ifndef PATTERNS_SHAWARMADIALOG_H
 #define PATTERNS_SHAWARMADIALOG_H
 
@@ -18,7 +14,7 @@
 #include "../log/Logger.h"
 #include "../client/IOrder.h"
 #include "../goods/ShawarmaFactory.h"
-
+#include "MyMessageDialog.h"
 
 class ShawarmaDialog : public Gtk::Window{
 private:
@@ -79,6 +75,10 @@ public:
 
     void addShawarma() {
         sizeShawarmaChanged();
+        if(shawarma == nullptr){
+            new MyMessageDialog("Выбраны не все параметры");
+            return;
+        }
         order->addGood(shawarma);
         order = nullptr;
         back();

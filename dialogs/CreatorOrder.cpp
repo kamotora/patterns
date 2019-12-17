@@ -8,7 +8,7 @@ CreatorOrder::CreatorOrder(IDialog *dialog) : dialog(dialog), order(nullptr) {}
 
 IOrder *CreatorOrder::createNewOrder() {
     order =  dialog->showDialogForOrder();
-    if(order != nullptr)
+    if(order != nullptr && order->getClient() != nullptr)
         chooseTypePayment(order);
     return order;
 }

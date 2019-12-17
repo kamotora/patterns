@@ -3,5 +3,3 @@
 //
 
 #include "MyMessageDialog.h"
-
-Gtk::MessageDialog * MyMessageDialog::dialog = nullptr;

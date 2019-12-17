@@ -28,8 +28,8 @@ private:
     CardPay *pay = nullptr;
 public:
     static CardPayWindow* getInstance(){
-        delete cardWindow;
-            Gtk::Builder::create_from_file("/home/artem/patterns/dialogs/test.glade")->get_widget_derived("cardPayWindow", cardWindow);
+        if(cardWindow == nullptr)
+             Gtk::Builder::create_from_file("/home/artem/patterns/dialogs/test.glade")->get_widget_derived("cardPayWindow", cardWindow);
         return cardWindow;
     }
 
@@ -59,15 +59,15 @@ public:
         std::string cvv = cvvField->get_text();
         std::string numCard = numCardField->get_text();
         if(numCard.empty()){
-            MyMessageDialog::showMsg("Номер карты не указан");
+            new MyMessageDialog("Номер карты не указан");
             return;
         }
         if(cvv.empty()){
-            MyMessageDialog::showMsg("CVV не указан");
+            new MyMessageDialog("CVV не указан");
             return;
         }
         if(cardHolder.empty()){
-            MyMessageDialog::showMsg("Владелец карты не указан");
+            new MyMessageDialog("Владелец карты не указан");
             return;
         }
         pay = new CardPay(numCard, cardHolder, cvv, order);

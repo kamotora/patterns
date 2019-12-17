@@ -18,6 +18,7 @@
 #include "../goods/TypePizzaFactory.h"
 #include "../log/Logger.h"
 #include "../client/IOrder.h"
+#include "MyMessageDialog.h"
 
 class PizzaDialog : public Gtk::Window {
 private:
@@ -70,8 +71,13 @@ public:
     }
 
     void addPizza() {
-        if(pizza == nullptr)
+        if(pizza == nullptr){
             typePizzaChanged();
+            if(pizza == nullptr){
+                new MyMessageDialog("Выбраны не все параметры.");
+                return;
+            }
+        }
         order->addGood(pizza);
         order = nullptr;
         back();
